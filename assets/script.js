@@ -100,15 +100,15 @@ function printCurrentWeather(currentWeatherResult){
     uvEl.append(uviEl);
     
     if (uviNumber <= 2) {
-        $('.uv-color').attr('style', 'background-color: green;')
+        $('.uv-color').attr('style', 'background-color: green; padding-block: 5px; padding-inline: 10px; border-radius: 5px;')
     } else if (uviNumber >= 3 || uviNumber <= 5) {
         $('.uv-color').attr('style', 'background-color: yellow; padding-block: 5px; padding-inline: 10px; border-radius: 5px;')
     } else if (uviNumber >= 6 || uviNumber <= 7) {
-        $('.uv-color').attr('style', 'background-color: orange;') 
+        $('.uv-color').attr('style', 'background-color: orange; padding-block: 5px; padding-inline: 10px; border-radius: 5px;') 
     } else if (uviNumber >= 8 || uviNumber <= 10) {
-        $('.uv-color').attr('style', 'background-color: red;') 
+        $('.uv-color').attr('style', 'background-color: red; padding-block: 5px; padding-inline: 10px; border-radius: 5px;') 
     } else if (uviNumber >= 11) {
-        $('.uv-color').attr('style', 'background-color: violet;') 
+        $('.uv-color').attr('style', 'background-color: violet; padding-block: 5px; padding-inline: 10px; border-radius: 5px;') 
     }
 
  
