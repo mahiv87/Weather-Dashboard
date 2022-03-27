@@ -1,7 +1,7 @@
 var searchFormEl = $('#search-form');
 var searchInputEl = $('#search-input');
 var searchBtnEl = $('.custom-btn');
-var dateEl = dayjs().format('MM/DD/YYYY');
+var dateEl = dayjs().format('dddd MM/DD/YYYY');
 var weatherContainerEl = $('#weather-container');
 var currentWeatherEl = $('#current-weather');
 var fiveDayEl = $('#fiveday');
@@ -21,7 +21,7 @@ function formSubmitHandler(event) {
 }
 
 function geoCode(city) {
-    var geoUrl = 'http://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=d78a881d9b1f59aec0dc0e3072bf1729';
+    var geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=d78a881d9b1f59aec0dc0e3072bf1729';
 
     fetch(geoUrl)
     .then(function (response) {
@@ -55,7 +55,6 @@ function searchApi(lat, lon) {
     })
     .then(function (searchResults) {
 
-        console.log(searchResults);
         printCurrentWeather(searchResults);
 
     })
@@ -99,8 +98,7 @@ function printCurrentWeather(currentWeatherResult){
     uvEl.text('UV Index: ');    
     currentWeatherEl.append(uvEl);
     uvEl.append(uviEl);
-    console.log(uviNumber);
-
+    
     if (uviNumber <= 2) {
         $('.uv-color').attr('style', 'background-color: green;')
     } else if (uviNumber >= 3 || uviNumber <= 5) {
@@ -141,9 +139,9 @@ function printCurrentWeather(currentWeatherResult){
         dayCardBody.addClass('card-body');
         dayCard.append(dayCardBody);
 
-        var dayCardDate = $('<h4>');
+        var dayCardDate = $('<h5>');
         dayCardDate.addClass('card-title');
-        dayCardDate.text(dayjs.unix(day.dt).format('MM/DD/YYYY'));
+        dayCardDate.text(dayjs.unix(day.dt).format('ddd MM/DD/YYYY'));
         dayCardDate.attr('style', 'color: #fcfcfc;');
         dayCardBody.append(dayCardDate);
 
