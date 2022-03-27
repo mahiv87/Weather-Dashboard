@@ -70,7 +70,7 @@ function printCurrentWeather(currentWeatherResult){
     cityEl.text(searchInputEl.val().trim() + ' ' + dateEl + ' ');
 
     var iconCode = currentWeatherResult.current.weather[0].icon;
-    var iconUrl = 'http://openweathermap.org/img/w/' + iconCode + '.png';
+    var iconUrl = 'https://openweathermap.org/img/w/' + iconCode + '.png';
     var icon = $('<img>');
     icon.attr('src', iconUrl).attr('alt', currentWeatherResult.current.weather[0].description);
 
@@ -146,7 +146,7 @@ function printCurrentWeather(currentWeatherResult){
         dayCardBody.append(dayCardDate);
 
         var dayCardIconCode = day.weather[0].icon;
-        var dayCardIconUrl = 'http://openweathermap.org/img/w/' + dayCardIconCode + '.png';
+        var dayCardIconUrl = 'https://openweathermap.org/img/w/' + dayCardIconCode + '.png';
         var dayCardIcon = $('<img>');
         dayCardIcon.attr('src', dayCardIconUrl).attr('alt', day.weather[0].description);
         dayCardBody.append(dayCardIcon);
