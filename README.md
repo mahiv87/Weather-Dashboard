@@ -7,7 +7,7 @@
 <ul>
     <li>For this project my goal was to create a Weather Dashboard to view the weather conditions for the current day, and the next five days.</li>
     <li>The UI provides a clean, and simple user experience.</li>
-    <li>During this project, I was able to dynamically update the weathe report using javascript.</li>
+    <li>During this project, I was able to dynamically update the weather report using javascript.</li>
 </ul>
 
 ---

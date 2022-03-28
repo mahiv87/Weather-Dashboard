@@ -90,7 +90,7 @@ function geoCode(city) {
 }
 
 function geoReverse(lat, lon) {
-    var geoReversUrl = 'http://api.openweathermap.org/geo/1.0/reverse?lat=' + lat + '&lon=' + lon + '&limit=2&appid=d78a881d9b1f59aec0dc0e3072bf1729'
+    var geoReversUrl = 'https://api.openweathermap.org/geo/1.0/reverse?lat=' + lat + '&lon=' + lon + '&limit=2&appid=d78a881d9b1f59aec0dc0e3072bf1729'
 
     fetch(geoReversUrl)
     .then(function (response) {
@@ -134,6 +134,8 @@ function printReverseGeo(nameReverse) {
     var reverseName = nameReverse[0].name;
        nameOfCity = reverseName;
 }
+
+
 
 function printCurrentWeather(currentWeatherResult){
     // Displays Current Weather
