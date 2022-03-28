@@ -2,14 +2,18 @@ var searchFormEl = $('#search-form');
 var searchInputEl = $('#search-input');
 var searchHistory = $('#search-history');
 var searchBtnEl = $('.custom-btn');
+var pastBtnEl = $('.past-btn');
 var dateEl = dayjs().format('dddd MM/DD/YYYY');
 var weatherContainerEl = $('#weather-container');
 var currentWeatherEl = $('#current-weather');
 var fiveDayEl = $('#fiveday');
 
+var weatherData = [];
+var nameOfCity;
+
 function formSubmitHandler(event) {
     event.preventDefault();
-    currentWeatherEl.innerHTML = '';
+    
     currentWeatherEl.attr('style', 'display: block');
 
     var cityName = searchInputEl.val().trim();    
@@ -19,15 +23,46 @@ function formSubmitHandler(event) {
         return;
     }
 
-    historyBtnEl()
-    geoCode(cityName);
+    historyBtnEl(cityName)
+    geoCode(cityName);    
+    
+    function storeWeatherData() {
+        localStorage.setItem('weather', JSON.stringify(weatherData));
+    }
+
+    weatherData.push(cityName);
+
+    storeWeatherData();
 }
 
-function historyBtnEl() {
+function renderPast(event) {
+    event.preventDefault();
+
+    currentWeatherEl.attr('style', 'display: block');
+    
+    weatherData.forEach(pastName => {
+        geoCode(pastName);
+    })   
+}
+
+function init() {
+    var storedWeatherData = JSON.parse(localStorage.getItem('weather'));
+  
+    if (storedWeatherData !== null) {
+      weatherData = storedWeatherData;
+    }
+    weatherData.forEach(pastSearch => {
+        historyBtnEl(pastSearch);
+    })
+  }
+  
+  init();
+
+function historyBtnEl(name) {
     var cityBtn = $('<button>');
-    cityBtn.addClass('custom-btn past-btn btn col-12 mt-1');
-    cityBtn.attr('type', 'submit');
-    cityBtn.text(searchInputEl.val().trim());
+    cityBtn.addClass('past-btn past-btn btn col-12 mt-1');
+    cityBtn.attr('type', 'button');
+    cityBtn.text(name);
     searchHistory.append(cityBtn);
 }
 
@@ -47,10 +82,30 @@ function geoCode(city) {
         var longitude = geoCoord[0].lon;
 
         searchApi(latitude, longitude);
+        geoReverse(latitude, longitude);
     })
     .catch(function (error) {
         console.error(error);
     })
+}
+
+function geoReverse(lat, lon) {
+    var geoReversUrl = 'http://api.openweathermap.org/geo/1.0/reverse?lat=' + lat + '&lon=' + lon + '&limit=2&appid=d78a881d9b1f59aec0dc0e3072bf1729'
+
+    fetch(geoReversUrl)
+    .then(function (response) {
+        if(!response.ok) {
+            throw response.json();
+        }
+
+        return response.json();
+    })
+    .then(function (reverseGeo) {
+        printReverseGeo(reverseGeo);
+    })
+    .catch(function (error) {
+        console.error(error);
+    });
 }
 
 function searchApi(lat, lon) {
@@ -75,10 +130,15 @@ function searchApi(lat, lon) {
 
 }
 
+function printReverseGeo(nameReverse) {
+    var reverseName = nameReverse[0].name;
+       nameOfCity = reverseName;
+}
+
 function printCurrentWeather(currentWeatherResult){
     // Displays Current Weather
     var cityEl = $('<h2>');
-    cityEl.text(searchInputEl.val().trim() + ' (' + dateEl + ') ');
+    cityEl.text(nameOfCity + ' (' + dateEl + ') ');
 
     var iconCode = currentWeatherResult.current.weather[0].icon;
     var iconUrl = 'https://openweathermap.org/img/w/' + iconCode + '.png';
@@ -122,8 +182,9 @@ function printCurrentWeather(currentWeatherResult){
     } else if (uviNumber >= 11) {
         $('.uv-color').attr('style', 'background-color: violet; padding-block: 5px; padding-inline: 10px; border-radius: 5px;') 
     }
+    
+    searchInputEl.val('');
 
- 
     // Displays 5-Day Forecast
     fiveDayEl.attr('style', 'display: block');
 
@@ -179,11 +240,10 @@ function printCurrentWeather(currentWeatherResult){
         dayCardHumidity.attr('style', 'color: #fcfcfc;');
         dayCardBody.append(dayCardHumidity);
     });
-
-
 }
 
 currentWeatherEl.attr('style', 'display: none');
 fiveDayEl.attr('style', 'display: none');
 
+searchHistory.on('click', '.past-btn', renderPast);
 searchFormEl.on('submit', formSubmitHandler);
