@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Questrial&display=swap');
+
 :root {
     --white: #fcfcfc;
     --dark-blue: #0a014f;
@@ -6,16 +8,35 @@
 
 * {
     box-sizing: border-box;
+    font-family: 'Questrial', sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-weight: bold;
 }
 
 .header {
     background-image: radial-gradient(var(--light-blue), var(--dark-blue));
-    color: var(--white);
+    color: var(--white);   
 }
 
 .custom-btn {
     background-color: var(--light-blue);
 
+}
+
+.past-btn {
+  background-color: grey;
+  color: var(--white);
+}
+
+.past-btn:hover {
+  background-color: darkgrey;
 }
 
 /* Flex content */

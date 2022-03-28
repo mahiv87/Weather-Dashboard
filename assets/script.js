@@ -1,5 +1,6 @@
 var searchFormEl = $('#search-form');
 var searchInputEl = $('#search-input');
+var searchHistory = $('#search-history');
 var searchBtnEl = $('.custom-btn');
 var dateEl = dayjs().format('dddd MM/DD/YYYY');
 var weatherContainerEl = $('#weather-container');
@@ -8,6 +9,7 @@ var fiveDayEl = $('#fiveday');
 
 function formSubmitHandler(event) {
     event.preventDefault();
+    currentWeatherEl.innerHTML = '';
     currentWeatherEl.attr('style', 'display: block');
 
     var cityName = searchInputEl.val().trim();    
@@ -17,7 +19,16 @@ function formSubmitHandler(event) {
         return;
     }
 
+    historyBtnEl()
     geoCode(cityName);
+}
+
+function historyBtnEl() {
+    var cityBtn = $('<button>');
+    cityBtn.addClass('custom-btn past-btn btn col-12 mt-1');
+    cityBtn.attr('type', 'submit');
+    cityBtn.text(searchInputEl.val().trim());
+    searchHistory.append(cityBtn);
 }
 
 function geoCode(city) {
@@ -67,7 +78,7 @@ function searchApi(lat, lon) {
 function printCurrentWeather(currentWeatherResult){
     // Displays Current Weather
     var cityEl = $('<h2>');
-    cityEl.text(searchInputEl.val().trim() + ' ' + dateEl + ' ');
+    cityEl.text(searchInputEl.val().trim() + ' (' + dateEl + ') ');
 
     var iconCode = currentWeatherResult.current.weather[0].icon;
     var iconUrl = 'https://openweathermap.org/img/w/' + iconCode + '.png';
@@ -75,6 +86,7 @@ function printCurrentWeather(currentWeatherResult){
     icon.attr('src', iconUrl).attr('alt', currentWeatherResult.current.weather[0].description);
 
     cityEl.append(icon);
+    currentWeatherEl.html('');
     currentWeatherEl.append(cityEl);
 
     var tempEl = $('<p>');
@@ -122,9 +134,10 @@ function printCurrentWeather(currentWeatherResult){
         currentWeatherResult.daily[5],
     ]
     
-    fiveDayArr.forEach(day => {
+    var dayCardContainer = $('.day-card-container');
+    dayCardContainer.html('');
 
-        var dayCardContainer = $('.day-card-container');
+    fiveDayArr.forEach(day => {
 
         var dayCardSize = $('<div>');
         dayCardSize.addClass('col-12 col-sm-3 col-lg-2 my-3 ms-1');
@@ -172,4 +185,5 @@ function printCurrentWeather(currentWeatherResult){
 
 currentWeatherEl.attr('style', 'display: none');
 fiveDayEl.attr('style', 'display: none');
+
 searchFormEl.on('submit', formSubmitHandler);
