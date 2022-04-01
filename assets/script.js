@@ -8,7 +8,10 @@ var weatherContainerEl = $('#weather-container');
 var currentWeatherEl = $('#current-weather');
 var fiveDayEl = $('#fiveday');
 
+// Array to for local storage
 var weatherData = [];
+
+// Variable to push name data to
 var nameOfCity;
 
 function formSubmitHandler(event) {
@@ -35,16 +38,18 @@ function formSubmitHandler(event) {
     storeWeatherData();
 }
 
+// Function displays weather when past search buttons clicked
 function renderPast(event) {
     event.preventDefault();
 
     currentWeatherEl.attr('style', 'display: block');
-    
+
     weatherData.forEach(pastName => {
         geoCode(pastName);
     })   
 }
 
+// Function at page load to grab Names from local storage
 function init() {
     var storedWeatherData = JSON.parse(localStorage.getItem('weather'));
   
@@ -58,6 +63,7 @@ function init() {
   
   init();
 
+//   This function dynamically creates past search buttons
 function historyBtnEl(name) {
     var cityBtn = $('<button>');
     cityBtn.addClass('past-btn past-btn btn col-12 mt-1');
@@ -66,6 +72,7 @@ function historyBtnEl(name) {
     searchHistory.append(cityBtn);
 }
 
+// Function takes name of city and grabs lat and lon
 function geoCode(city) {
     var geoUrl = 'https://api.openweathermap.org/geo/1.0/direct?q=' + city + '&appid=d78a881d9b1f59aec0dc0e3072bf1729';
 
@@ -89,6 +96,8 @@ function geoCode(city) {
     })
 }
 
+// This function takes lat and lon
+// to get name of city
 function geoReverse(lat, lon) {
     var geoReversUrl = 'https://api.openweathermap.org/geo/1.0/reverse?lat=' + lat + '&lon=' + lon + '&limit=2&appid=d78a881d9b1f59aec0dc0e3072bf1729'
 
@@ -108,6 +117,7 @@ function geoReverse(lat, lon) {
     });
 }
 
+// Function fetchs weather data from OpenWeather api
 function searchApi(lat, lon) {
     var currentApi = 'https://api.openweathermap.org/data/2.5/onecall?lat=' + lat + '&lon=' + lon + '&exclude=hourly,minutely,alerts&appid=d78a881d9b1f59aec0dc0e3072bf1729&units=imperial';
 
@@ -130,13 +140,13 @@ function searchApi(lat, lon) {
 
 }
 
+// This function grabs name of city and adds it to nameOfCity variable
 function printReverseGeo(nameReverse) {
     var reverseName = nameReverse[0].name;
        nameOfCity = reverseName;
 }
 
-
-
+// This function renders weather to page
 function printCurrentWeather(currentWeatherResult){
     // Displays Current Weather
     var cityEl = $('<h2>');
@@ -185,6 +195,7 @@ function printCurrentWeather(currentWeatherResult){
         $('.uv-color').attr('style', 'background-color: violet; padding-block: 5px; padding-inline: 10px; border-radius: 5px;') 
     }
     
+    // Clear search input
     searchInputEl.val('');
 
     // Displays 5-Day Forecast
@@ -244,8 +255,10 @@ function printCurrentWeather(currentWeatherResult){
     });
 }
 
+// Hides Elements on page start
 currentWeatherEl.attr('style', 'display: none');
 fiveDayEl.attr('style', 'display: none');
 
+// Event Listeners
 searchHistory.on('click', '.past-btn', renderPast);
 searchFormEl.on('submit', formSubmitHandler);
