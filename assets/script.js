@@ -41,12 +41,10 @@ function formSubmitHandler(event) {
 // Function displays weather when past search buttons clicked
 function renderPast(event) {
     event.preventDefault();
-
     currentWeatherEl.attr('style', 'display: block');
 
-    weatherData.forEach(pastName => {
-        geoCode(pastName);
-    })   
+    var pastName = event.target.innerText;    
+    geoCode(pastName);
 }
 
 // Function at page load to grab Names from local storage
@@ -70,6 +68,8 @@ function historyBtnEl(name) {
     cityBtn.attr('type', 'button');
     cityBtn.text(name);
     searchHistory.append(cityBtn);
+
+    $('.past-btn').on('click', renderPast);
 }
 
 // Function takes name of city and grabs lat and lon
@@ -260,5 +260,5 @@ currentWeatherEl.attr('style', 'display: none');
 fiveDayEl.attr('style', 'display: none');
 
 // Event Listeners
-searchHistory.on('click', '.past-btn', renderPast);
+// searchHistory.on('click', '.past-btn', renderPast);
 searchFormEl.on('submit', formSubmitHandler);
